@@ -8,7 +8,7 @@
  * the precached copy.
  */
 
-const CACHE_NAME = "promptly-v1";
+const CACHE_NAME = "promptly-v2";
 
 const PRECACHE = [
   "./",

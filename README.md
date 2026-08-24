@@ -127,11 +127,13 @@ the room.
 
 ## Prompt categories
 
-Six categories ship, 30 prompts each: Movies, Animals, Actions, Around the
-House, Famous Names, Food & Drink.
+Seven categories, 150 prompts each — 1050 total: Movies, Bollywood, Animals,
+Actions, Around the House, Famous Names, Food & Drink.
 
-**These are placeholder decks** — sized for playtesting, not for a real party.
-They are the first thing to expand.
+150 is deliberate. A 60-second round burns 10–15 prompts and a default match is
+six rounds, so ~90 is the realistic ceiling for one sitting. At 150 a match
+never exhausts the pool — so it never repeats — and playing the same category
+twice in a row still deals a different shuffle.
 
 Everything lives in `js/data/categories.js` as one array:
 
@@ -153,9 +155,12 @@ export const categories = [
   the deleted `id`, setup shows "None selected" and starting a match returns to
   the category screen instead of failing.
 
-Keep `id` stable — it is what gets saved to localStorage. Prompts render at
-display size, so short ones read best; anything long wraps rather than
-overflowing.
+Keep `id` stable — it is what gets saved to localStorage.
+
+Prompts render at display size, so keep them short. 24 characters is the most
+that wraps cleanly on a small phone in landscape, and nothing in the shipped
+decks exceeds it. Aim for prompts that work in all three modes: guessable from
+clues, actable without props, and drawable without words.
 
 ---
 
@@ -260,8 +265,10 @@ Nothing is ever sent anywhere. Preferences live in localStorage on the device.
 
 ## Known limitations
 
-- **Prompt decks are placeholders.** 180 prompts total is enough to playtest,
-  not enough for a long session.
+- **Decks are culturally scoped.** Movies is English-language and Bollywood is
+  Hindi cinema, so the right one to pick depends on the room. Famous Names still
+  leans Western. Any group with a different centre of gravity will want its own
+  category — which is a one-object edit.
 - **Icons are SVG only.** iOS ignores SVG for Add to Home Screen and will
   generate a screenshot-based icon instead. Proper PNGs (192px, 512px, and a
   maskable variant) would need a raster tool, which this repo deliberately does
