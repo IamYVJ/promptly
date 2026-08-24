@@ -87,7 +87,6 @@ function renderForeheadGame(state, mode) {
           ? `<p class="fh-hint">Tilt forward &middot; correct &nbsp; | &nbsp; Tilt back &middot; skip</p>`
           : ""
       }
-      <p class="rotate-hint">Turn your phone sideways</p>
     </div>
 
     ${flashOverlay(state)}

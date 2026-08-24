@@ -16,7 +16,7 @@ the app exactly as it runs.
 | Mode | Who holds the phone | How it works |
 | --- | --- | --- |
 | **Charades** | The performer | Reveal the prompt privately, act it out, no talking. |
-| **Forehead** | The guesser | Hold the phone against your forehead, screen facing your team. They give clues; you guess. Tilt forward for correct, back to skip. |
+| **Forehead** | The guesser | Turn the phone sideways and hold it against your forehead, screen facing your team. They give clues; you guess. Tilt forward for correct, back to skip. |
 | **Draw & Guess** | The drawer | Reveal the prompt privately, draw it on paper or a whiteboard. No words, no letters. |
 
 All three share one match engine. A mode only decides **who sees the prompt**,
@@ -116,6 +116,23 @@ the only thing that decides whether a Correct or Skip counts. It rejects input
 after time expires, during feedback, while a dialog is open, and on any screen
 that is not gameplay. A double tap, or a tap plus a stray tilt, cannot score
 twice.
+
+**Forehead rotates its own board.** Forehead is played with the phone turned
+sideways, but a rotation-locked phone keeps reporting a portrait viewport however
+it is physically held — and that is the common case. So rather than asking the
+player to rotate a screen that will not rotate, `@media (orientation: portrait)`
+rotates the whole Forehead board: `width: 100svh`, `height: 100svw`, and a
+`rotate(90deg)`. Inside that box the viewport axes are swapped, so anything sized
+against the *visual* horizontal uses `svh` and anything against the *visual*
+vertical uses `svw`. The word lands at the same size either way — 73px on a
+375×812 phone, whether the phone reports landscape or is locked to portrait.
+Only `.game-forehead` is rotated; Charades and Draw & Guess are untouched.
+
+**Prompt size is bound by the scarcer axis.** `.prompt` uses
+`clamp(2.25rem, min(11vw, 13vh), 3.5rem)`. The `13vh` term only ever binds on
+landscape phones, which are wide but short — sizing on width alone pinned the
+font to its maximum there and a two-line prompt then overran the gap between the
+HUD and the controls.
 
 **Prompts must not leak.** Handoff and reveal screens are load-bearing, not
 decoration. The handoff screen never contains the prompt in its markup, scoring

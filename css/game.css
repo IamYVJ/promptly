@@ -161,7 +161,14 @@
 .prompt {
   width: 100%;
   font-family: var(--font-serif);
-  font-size: clamp(2.25rem, 11vw, 3.5rem);
+  /*
+   * Sized against whichever axis is scarcer. Landscape phones are wide but
+   * short, so scaling on width alone pins this to the 3.5rem cap and a
+   * two-line prompt then overruns the screen between the HUD and the controls.
+   * The vh term only ever binds in landscape; portrait and desktop are
+   * unaffected because there 11vw is already the smaller of the two.
+   */
+  font-size: clamp(2.25rem, min(11vw, 13vh), 3.5rem);
   font-weight: 600;
   line-height: 1.05;
   letter-spacing: var(--tracking-tight);
@@ -319,24 +326,47 @@
   color: var(--text-muted);
 }
 
-.rotate-hint {
-  display: none;
-}
-
+/*
+ * Forehead is played with the phone turned sideways, held against a forehead
+ * with the screen facing the team. But a rotation-locked phone keeps reporting
+ * a portrait viewport however it is physically held, and that is the common
+ * case — so the board is rotated here instead of asking the player to rotate a
+ * screen that will not rotate. The word then reads across the long edge, which
+ * is the only orientation the team can actually read.
+ *
+ * The rotated box swaps the viewport axes: its width is 100svh and its height
+ * is 100svw. So inside it, anything sized against the *visual* horizontal must
+ * use svh, and anything sized against the *visual* vertical must use svw.
+ */
 @media (orientation: portrait) {
-  .game-forehead .rotate-hint {
-    display: block;
-    padding-top: var(--space-2);
-    text-align: center;
-    font-size: var(--text-eyebrow);
-    font-weight: 700;
-    letter-spacing: var(--tracking-eyebrow);
-    text-transform: uppercase;
-    color: var(--warning);
+  .game-forehead {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100svh;
+    height: 100svw;
+    /* .game sets min-height: 100svh, which would outrank the height above. */
+    min-height: 0;
+    transform: translate(-50%, -50%) rotate(90deg);
+    transform-origin: center;
+    /*
+     * env() insets describe the unrotated viewport, so they have to be
+     * remapped or they pad the wrong physical edges. Under rotate(90deg) the
+     * board's left edge lands on the viewport top, right on bottom, top on
+     * right, bottom on left — so each inset moves one quarter turn with it.
+     * That keeps the word clear of the notch and the home indicator.
+     */
+    padding: calc(var(--safe-right) + var(--space-3)) calc(var(--safe-bottom) + var(--space-5))
+      calc(var(--safe-left) + var(--space-3)) calc(var(--safe-top) + var(--space-5));
   }
 
-  .game-forehead .fh-hint {
-    display: none;
+  /* Mirrors the landscape rule below, with the two axes swapped. */
+  .game-forehead .fh-prompt {
+    font-size: clamp(1.75rem, min(9svh, 20svw), 5rem);
+  }
+
+  .game-forehead .control-btn {
+    min-height: 52px;
   }
 }
 
