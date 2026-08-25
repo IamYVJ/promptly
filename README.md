@@ -144,8 +144,13 @@ the room.
 
 ## Prompt categories
 
-Seven categories, 150 prompts each — 1050 total: Movies, Bollywood, Animals,
-Actions, Around the House, Famous Names, Food & Drink.
+Eleven categories, 150 prompts each — 1650 total: Movies, Bollywood, Animals,
+Actions, Around the House, Famous Names, Food & Drink, Jobs, Sports & Games,
+Travel & Places, Music.
+
+A prompt may appear in two decks — Ludo is a Bollywood film and a board game,
+and Actions shares a dozen sport names with Sports & Games. That is harmless:
+one match draws from one category, so a player never sees the repeat.
 
 150 is deliberate. A 60-second round burns 10–15 prompts and a default match is
 six rounds, so ~90 is the realistic ceiling for one sitting. At 150 a match
