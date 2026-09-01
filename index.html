@@ -31,6 +31,15 @@
   <body>
     <main id="app" class="app"></main>
 
+    <!--
+      Outside #app on purpose: js/ui/render.js replaces that element's
+      innerHTML on every commit, so a counter nested inside would be destroyed
+      on the next redraw.
+    -->
+    <p class="visitor-counter" hidden>
+      <span id="visitor-count" class="visitor-count">—</span> visitors
+    </p>
+
     <div id="live" class="sr-only" role="status" aria-live="polite"></div>
 
     <noscript>
@@ -41,5 +50,17 @@
     </noscript>
 
     <script type="module" src="./js/main.js"></script>
+
+    <!--
+      Cross-origin on purpose, and deliberately absent from the service
+      worker's precache: a beacon answered from cache records nothing.
+      sw.js lets unknown cross-origin hosts fall through to the network
+      untouched, so offline loads simply go uncounted.
+    -->
+    <script
+      data-goatcounter="https://yvj.goatcounter.com/count"
+      async
+      src="//gc.zgo.at/count.js"
+    ></script>
   </body>
 </html>

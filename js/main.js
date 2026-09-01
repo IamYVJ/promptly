@@ -10,6 +10,7 @@ import { LIVE_SCREENS, SCREEN, createInitialState } from "./core/state.js";
 import { createController } from "./game/controller.js";
 import { loadPreferences } from "./storage/preferences.js";
 import { createRenderer, paintMotionProgress, paintTimer } from "./ui/render.js";
+import { showVisitorCount } from "./ui/visitorCount.js";
 
 const root = document.getElementById("app");
 const liveRegion = document.getElementById("live");
@@ -131,6 +132,10 @@ bus.on("motion:progress", paintMotionProgress);
 
 store.subscribe(render);
 render(store.state);
+
+// Outside the store on purpose: the footnote lives beside #app, never inside a
+// rendered screen, so it is untouched by re-renders and resolves once.
+showVisitorCount();
 
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
   window.addEventListener("load", () => {

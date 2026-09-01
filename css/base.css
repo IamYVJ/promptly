@@ -22,6 +22,9 @@ body {
   color: var(--text);
   font-family: var(--font-sans);
   font-size: var(--text-base);
+  /* Held here rather than on .app so a sibling of #app — the visitor counter —
+     can sit under the content instead of below a full-height root. */
+  min-height: 100svh;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -73,7 +76,6 @@ svg {
 
 .app {
   display: block;
-  min-height: 100svh;
 }
 
 .screen {
@@ -95,6 +97,56 @@ svg {
   width: 100%;
   max-width: none;
   padding: 0;
+}
+
+/* --- Visitor counter ---------------------------------------------------- */
+
+/*
+ * Decorative fine print, matching .copy-muted's colour and size.
+ *
+ * No `display` is declared here on purpose: any display value would outrank
+ * the `hidden` attribute and show a bare em dash to every visitor whose
+ * adblocker eats the request. Reveal happens in JS by clearing `hidden`.
+ */
+.visitor-counter {
+  width: min(100%, var(--content-width));
+  margin-inline: auto;
+  padding-inline: var(--space-5);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+.visitor-count {
+  font-family: var(--font-mono);
+}
+
+/*
+ * Every .screen carries its own min-height: 100svh, so this sibling would
+ * otherwise land a full viewport below the content and give short screens a
+ * scrollbar they did not have. Pulling it up by exactly the screen's bottom
+ * padding seats it on the line after the content without growing the page.
+ *
+ * Scoped with :has() to padded screens only. Gameplay is .screen-flush with
+ * zero padding, where the same pull would drag this over the live controls.
+ */
+body:has(#app > .screen:not(.screen-flush)) .visitor-counter {
+  margin-top: calc(-1 * (var(--space-5) + var(--safe-bottom)));
+}
+
+/*
+ * Gameplay is edge-to-edge and already fills the viewport, so an in-flow
+ * footnote below it adds its own height as scrollable overflow — enough to
+ * nudge the Correct/Skip controls off-screen mid-round. Taking it out of flow
+ * costs the page nothing and cannot be scrolled to.
+ *
+ * `position` rather than `display: none`, so the base rule's contract holds:
+ * nothing in this file may declare a display value that would outrank the
+ * `hidden` attribute the JS relies on.
+ */
+body:has(#app > .screen-flush) .visitor-counter {
+  position: fixed;
+  visibility: hidden;
 }
 
 /* --- Typography -------------------------------------------------------- */

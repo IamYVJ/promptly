@@ -8,7 +8,7 @@
  * the precached copy.
  */
 
-const CACHE_NAME = "promptly-v4";
+const CACHE_NAME = "promptly-v5";
 
 const PRECACHE = [
   "./",
@@ -37,6 +37,7 @@ const PRECACHE = [
   "./js/storage/preferences.js",
   "./js/ui/components.js",
   "./js/ui/render.js",
+  "./js/ui/visitorCount.js",
   "./js/ui/screens/categories.js",
   "./js/ui/screens/forehead.js",
   "./js/ui/screens/game.js",
